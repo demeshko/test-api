@@ -10,4 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/news', [NewsApiController::class, 'getAllNews']);
 Route::get('/news/{id}', [NewsApiController::class, 'getNews']);
-Route::patch('/news', [NewsApiController::class, 'changeNewsState']);
+Route::patch('/news/state', [NewsApiController::class, 'changeNewsState']);

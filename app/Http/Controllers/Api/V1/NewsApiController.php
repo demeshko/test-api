@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
@@ -8,7 +9,7 @@ use App\Http\Requests\NewsPatchRequest;
 use App\Http\Resources\Api\V1\NewsApiResource;
 use App\Services\NewsService;
 use App\Services\NewsState;
-use Illuminate\Http\Request;
+
 class NewsApiController extends Controller
 {
     public function __construct(protected NewsService $newsService)
@@ -22,11 +23,13 @@ class NewsApiController extends Controller
         return NewsApiResource::make($news);
     }
 
-    public function changeNewsState(NewsPatchRequest $request)
+    public function changeNewsState(NewsPatchRequest $request): NewsApiResource
     {
+        $state = $request->validated('news_state');
+
         $dto = new NewsPatchDto(
             $request->validated('id'),
-            NewsState::{$request->validated('news_state')}->value
+            (bool) NewsState::{$state}->value,
         );
 
         $news = $this->newsService->changeNewsState($dto);
@@ -34,7 +37,7 @@ class NewsApiController extends Controller
         return NewsApiResource::make($news);
     }
 
-    public function getNews(string $id): NewsApiResource
+    public function getNews(int $id): NewsApiResource
     {
         $news = $this->newsService->getNewsById($id);
 

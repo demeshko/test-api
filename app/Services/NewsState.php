@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-enum NewsState: string
+enum NewsState: int
 {
-    case active = 'true';
-    case hidden = 'false';
+    case active = 1;
+    case hidden = 0;
 }
